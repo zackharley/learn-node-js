@@ -1,0 +1,30 @@
+.hidden {
+	visibility: hidden;
+}
+
+.overlay-wrapper {
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.4);
+	display: flex;
+	height: 100vh;
+	justify-content: center;
+	position: absolute;
+    top: 0;
+	width: 100vw;
+}
+
+.geosuggest {
+	background-color: white;
+    height: 140px;
+    width: 325px;
+}
+
+.geosuggest__input {
+	width: 100%;
+}
+
+.geosuggest__suggests {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
