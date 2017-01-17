@@ -40,7 +40,7 @@ Get the API keys for both of those APIs and make note of them. We'll be using th
 
 ## Introduction
 
-Node.js, as described on the [Node.js website](https://nodejs.org), is an "asynchronous event driven JavaScript runtime". Let's chop up this statement up into pieces to better understand what that means and explore a little deaper:
+Node.js, as described on the [Node.js website](https://nodejs.org), is an "asynchronous event driven JavaScript runtime". Let's chop up this statement up into pieces to better understand what that means and explore a little deeper:
 
 - **asynchronous**: Node takes advantage of *non-blocking I/O* to ensure faster speeds when executing JavaScript code. This fancy language means that if a Node program needs to get information from another file on your computer or from an API on the internet, that it starts the request for information, but doesn't stop program execution to wait for the information to return. We'll talk more about this later. For more reading, see Node.js' [Overview of Blocking vs Non-Blocking](https://github.com/nodejs/node/blob/master/doc/topics/blocking-vs-non-blocking.md).
 - **event driven**: Node uses something called the *event loop* to allow for non-blocking I/O. Essentially, the event loop allows Node to unload I/O operations to the operating system so it can continue program execution. The event loop keeps track of I/O requests and resolves them when the request returns.
@@ -52,7 +52,14 @@ Some languages like C/C++ require you to compile your programs before you run th
 
 ## Exercises
 
-These exercises are designed to 
+These exercises are designed to `<!-- TODO -->`
+
+There are two folders for each exercise:
+
+- **##-Exercise-Name** : The [boilerplate code](https://en.wikipedia.org/wiki/Boilerplate_code) necessary for the exercises is contained here. This is where you can write code as we progress through the workshop.
+- **##-Exercise-Name_solution**: This folder contains __one possible solution__ to the problem. The solution in this folder is not necessarily the only possible solution, so keep that in mind.
+
+**You are now ready to begin!**
 
 ### 01 - Hello World
 
@@ -70,22 +77,23 @@ $ node index.js
 
 The `node` command executes a supplied JavaScript file. Soon we'll see how to split our programs into different files, or modules, and how to import and export those modules so they can be used by Node. But first, another example.
 
+> **NOTE:** There are a number of other Node.js APIs that give you more functionality than what is offered when writing JavaScript for the browser. While we will see some of the other APIs in this workshop, you can see a full list of APIs in the [Node.js documentation](https://nodejs.org/api/)
+
 ### 02 - Basic Addition
 
 > **Learning goal:** To explore more of the Node.js APIs. 
 
-Next, let's create a basic command line interface (CLI) that allows us to take 
-two integers as inputs and print their sum to the command line. For example:
+Next, let's create a basic command line interface (CLI) that allows us to take two integers as inputs and print their sum to the command line. For example:
 ```
 $ node sum.js 12 30
 12 + 30 = 42
 ```
 
-To be able to access arguments supplied to the program we will have to make use of the `process` API. This API gives us access to information about, and control over, the current Node process. The proces info is available throught the global variable `process`. The property of `process` that we are going to use is `process.argv`. This is an array of arguments passed to Node when the precess was started. The zero-th index is always the path to the `node` executable file on your computer and the first index is the path to the file that is being executed. The remaining indices in the array are any other arguments supplied. For example:
+To be able to access arguments supplied to the program we will have to make use of the `process` API. This API gives us access to information about and control over the current Node process. The process info is available throught the global variable `process`. The property of `process` that we are going to use is `process.argv`. This is an array of arguments passed to Node when the precess was started. The zero-th index is always the path to the `node` executable file on your computer and the first index is the path to the file that is being executed. The remaining indices in the array are any other arguments supplied. For example:
 ```
 $ node sum.js 12 30
 ```
-Would generate a `process.argv` similar to:
+would generate a `process.argv` similar to:
 ```javascript
 ['/path/to/node.exe', '/path/to/sum.js', '12', '30']
 ```
@@ -96,14 +104,14 @@ const numberOne = parseInt(process.argv[2]);
 const numberTwo = parseInt(process.argv[3]);
 ```
 
-To make sure our program handles incorrect input, we want to make sure that the two integers supplied are numbers. If they are not numbers (or NaNs), then we want output an error to the `error` stream of the `console` API.
+To make sure our program handles incorrect input, we want to make sure that the two integers supplied are numbers. If they are not numbers (or NaNs) then we want to throw an error.
 ```javascript
 if(isNaN(numberOne) || isNaN(numberTwo)) {
-	console.error('You must supply two integers!');
+	throw new Error('You must supply two integers!');
 }
 ```
 
-If the two inputs pass the test, then we want to output their sum. We'll be using a [template literal](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals) to accomplish this. Instead of concatenating string together with th `+` symbol like this:
+If the two inputs pass the test, then we want to output their sum. We'll be using a [template literal](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals) to accomplish this. Instead of concatenating strings together with the `+` symbol like this:
 ```javascript
 numberOne + ' + ' numberTwo + ' = ' + sum;
 // < - '12 + 30 = 42'
@@ -121,14 +129,21 @@ else {
 	console.log(`${numberOne} + ${numberTwo} = ${sum}`);
 }
 ```
+
+We can test that our program works correctly by testing that it outputs the correct sum. For example:
+```
+$ node sum.js 12 30
+12 + 30 = 42
+```
+
 ### 03 - Modules
 
 > **Learning goal:** To understand how Node.js module system (a.k.a. CommonJS) works.
 
-Once our program begins to grow in size, we'll want to begin to split the code into different files, or **modules**. Modules are important for many reasons, some of which include
+Once our program begins to grow in size, we'll want to begin to split the code into different files, or [**modules**](https://nodejs.org/api/modules.html). Modules are important for many reasons, some of which include
 
 - They make reading code easier
-- They are reusable
+- They are reusable and, therefore, reduce the duplication of code
 - Allows us to decouple, or isolate, pieces of code from one another, meaning that breaking changes made to code in modules will usually have a lesser breaking effect than changes made to a large codebase in one file
 
 You can read more on modules [here](http://eloquentjavascript.net/10_modules.html).
@@ -153,31 +168,111 @@ console.log(num);
 // <- 2
 ```
 
-This function
+These functions will be declared in the `arithmetic.js` file. We will import that module into `index.js` so that we can make use of both `add` and `subtract`.
 
-This will be written in the `arithmetic.js` file. We will import that module into `index.js` so that we can 
+When we want to use an external module added to the project with a package manager like NPM, we can just specify the name of the the module (we'll see this soon). For this example, since we are creating our own module and it is a file in our project, we will want to specify a path to the file by adding a prefix (`/`, `./`, `../`) our module filename. 
 
-- add/subtract function in our own `arithmatic` module
-- introduce `module.exports` and `export.*`
+- `/` gives an absolute path to a file. For example, a path that specifies `/users/zack/myModule.js` will look for `/users/zack/myModule.js`.
+- `./` gives a relative path to a file, so a path that specifies `./myModule.js` will look for `myModule.js` in the current working directory. For example, if the current working directory is `/users/zack` and we want to get the file `/users/zack/myModule.js`, we can use the path `./myModule.js`.
+- `../` gives a relative path to a file and is used to move up a level in the file system. For example, if the current working directory is `/users/zack/coding/` and I want to get the file `/users/zack/myModule.js`, we can use the path `../myModule.js`.
 
+The Node module system allows us to omit the file extension for convenience when importing files with the extensions `.js`, `.json`, and `.node`, as well as files without a file extension. For example, if we want to import `/users/zack/myModule.js`, we can use the path `/users/zack/myModule`. Node will first check for a file called `myModule`, then check for `myModule.<file_extension>`, with the extensions `.js`, `.json`, and `.node`, in that order.
+
+When using the `require` keyword, it's return value, will be whatever has been exported from the module.
+
+So to import our `arithmetic.js` module into `index.js`, our import statement will look like
+
+```js
+const arithmetic = require('./arithmetic');
+```
+
+We also have the specification in `index.js` that the `add` and `subtract` functions must be properties of the arithmetic module. This means that the `arithmetic` variable should look like
+
+```js
+const arithmetic = {
+    add(a, b) {
+        // add two numbers
+    },
+    subtract(a, b) {
+        // subtract b from a
+    }
+}
+```
+
+Now that we know this, we can begin to create our custom module. There are two ways we can export the functions that we want:
+
+- Using `module.exports` to specify an object to return
+- Adding properties to `exports` to return
+
+Let's first start by creating our add and subtract functions:
+
+```js
+function add(a, b) {
+	return a + b;
+}
+
+function subtract(a, b) {
+	return a - b;
+}
+```
+
+Let's look at exporting the two functions using `module.exports`. Let's say we want to export the number 42 from a module so we can use it elsewhere:
+```js
+module.exports = 42;
+```
+
+If we require this module elsewhere, it will import the value 42. That's it! It's that easy. It can become more complicated when you need to export multiple things, but is still fairly straightforward.
+
+To export the `add` and `subtract` functions, we can assign them as properties of an object and export the object.
+
+```js
+const stuffToExport = { add, subtract };
+
+module.exports = stuffToExport;
+```
+
+or just
+
+```js
+module.exports = { add, subtract };
+```
+
+The `exports` keyword is a shorthand that allows us to export multiple things easily. Since `exports` is an Object, we can assign value to properties:
+
+```js
+exports.add = add;
+exports.subtract = subtract;
+```
+
+> **NOTE:** If you assign `exports` to another Object (i.e. `exports = { a: 42 };`), whatever you've assigned it to will not be exported. See the [Node.js API docs](https://nodejs.org/api/modules.html) for more info.
+
+My reccomendation is to use `exports` when you need to export multiple things from a module and `module.exports` when exporting just one thing.
+
+We can test this module by running 
+
+```js
+node index.js
+```
 
 ### 04 - Synchronous I/O
 
-> **Learning goal:** 
+> **Learning goal:** Understand how Node.js deals with file I/O
+
+W
 
 - count the number of colour occurences in the file and output them to the command line
 - talk about exit console statement
 
 ### 05 - Asynchronous I/O
 
-> **Learning goal:** 
+> **Learning goal:** `<!-- TODO -->`
 
 - count the number of colour occurences in the file and output them to the command line
 - talk about exit console statement
 
 ### 06 - Hello HTTP
 
-> **Learning goal:** 
+> **Learning goal:** `<!-- TODO -->`
 
 - What is HTTP? What is HTTPS?
 - Anatomy of an HTTP request
@@ -193,35 +288,35 @@ In this workshop we will only be dealing with HTTP as HTTPS requires more config
 
 ### 07 - HTTP with Express.js
 
-> **Learning goal:** 
+> **Learning goal:** `<!-- TODO -->`
 
 - Hello world with Express
 
 ### 08 - Routing
 
-> **Learning goal:** 
+> **Learning goal:** `<!-- TODO -->`
 
 - route in `index.js`
 
 ### 09 - Routing with Router
 
-> **Learning goal:** 
+> **Learning goal:** `<!-- TODO -->`
 
 - move routing to a `routes.js`
 
 ### 10 - Static Files
 
-> **Learning goal:** 
+> **Learning goal:** `<!-- TODO -->`
 
 ### 11 - Middleware
 
-> **Learning goal:** 
+> **Learning goal:** `<!-- TODO -->`
 
 - Create our own middleware generate request logs [Apache log](http://ossec-docs.readthedocs.io/en/latest/log_samples/apache/apache.html)
 
 ### 12 - Consuming APIs
 
-> **Learning goal:** 
+> **Learning goal:** `<!-- TODO -->`
 
 - Use GitHub as an example
 
