@@ -178,7 +178,7 @@ When we want to use an external module added to the project with a package manag
 
 The Node module system allows us to omit the file extension for convenience when importing files with the extensions `.js`, `.json`, and `.node`, as well as files without a file extension. For example, if we want to import `/users/zack/myModule.js`, we can use the path `/users/zack/myModule`. Node will first check for a file called `myModule`, then check for `myModule.<file_extension>`, with the extensions `.js`, `.json`, and `.node`, in that order.
 
-When using the `require` keyword, it's return value, will be whatever has been exported from the module.
+When using the `require` keyword, it's return value, will be whatever has been exported from the module. You almost always want to use `require` at the top of the file you are importing to so that you are able to use the imported code right away.
 
 So to import our `arithmetic.js` module into `index.js`, our import statement will look like
 
@@ -250,18 +250,87 @@ My reccomendation is to use `exports` when you need to export multiple things fr
 
 We can test this module by running 
 
-```js
-node index.js
+```
+$ node index.js
 ```
 
 ### 04 - Synchronous I/O
 
 > **Learning goal:** Understand how Node.js deals with file I/O
 
-W
+We talked about how Node performs non-blocking I/O. What I didn't mention, was that the Node APIs allow us to perform synchronous I/O (though you will want to avoid this at all cost). To get used to I/O we want to create a CLI that will count the occurences of a given colour in a given JSON file, as such:
 
-- count the number of colour occurences in the file and output them to the command line
-- talk about exit console statement
+```
+$ node index.js colours.json green
+There are 55 occurences of green in colours.json
+Exiting
+```
+
+For this exercise, we will be using Node's File System API to perform I/O. This module has to be imported:
+```js
+const fs = require('fs');
+```
+
+Next, we want two inputs to our CLI, so we need to retrieve those from `process.argv`:
+
+```js
+const filename = process.argv[2];
+const colourToCount = process.argv[3];
+```
+
+We first perform a check to ensure that both `filename` and `colourToCount` are non-empty strings. If they are non-empty we can proceed; if not, we throw an error:
+
+```js
+if(filename !== '' || colourToFind !== '') {
+	// count colours
+} else {
+	throw new Error('You must supply a filename and a colour to count!')
+}
+```
+
+
+To count the colours, we're going to want to use the [`readFileSync`](https://nodejs.org/api/fs.html#fs_fs_readfilesync_file_options) method on `fs` to import our list of colours. This will allow us to perform blocking I/O, meaning that the program will wait until the `readFileSync` function resolves until it completes anything else. Something to note about reading from a file with Node is that it returns the data as a Buffer (unless otherwise specified), so to make the data readable, we want convert it into a JSON object (since it is being read from a JSON file):
+
+```js
+const colours = JSON.parse(fs.readFileSync(filename));
+```
+
+Since our JSON file contains an array of colours, that is what is contained in `colours`.
+
+We then want to initialize our `count` variable:
+
+```js
+let count = 0;
+```
+
+Next, we have to create a way of matching the `colourToCount` to the `colours`. The easiest way in my opinion is to use a [Regular Expression](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions) (RegExp); we want to create a case insensitive RegExp:
+
+```js
+const regexp = new RegExp(colourToCount, 'i');
+```
+
+Now that we have a way of matching the colours in the `colours` array, we can begin checking them. All we want to do is increment the count every time there is a match between the current colour and the `colourToCount`:
+
+```js
+colours.forEach(colour => {
+	if(colour.match(regexp)) {
+		count++;
+	}
+});
+```
+
+We then want to print a message depending on the count. If there are zero occurences, then we want to print that we were unable to find the colour they were looking for. If we find the colour at least once, they we want to print the count:
+
+```js
+if(count === 0) {
+	console.log(`Unable to find "${colourToCount}" in ${filename}`);
+} else {
+	console.log(`There are ${count} occurences of ${colourToCount} in ${filename}`);
+}
+```
+
+
+- talk about exit console statement `<!-- TODO -->`
 
 ### 05 - Asynchronous I/O
 
@@ -272,20 +341,69 @@ W
 
 ### 06 - Hello HTTP
 
-> **Learning goal:** `<!-- TODO -->`
-
-- What is HTTP? What is HTTPS?
-- Anatomy of an HTTP request
-- HTTP verbs
-- CRUD API design
-- HTTP status codes
+> **Learning goal:** Understand how basic web servers work and how the client-server relationship is used on the Internet.
 
 Before we make our first web server, we want to make sure we understand the underlying technology that allows web servers to communicate with the outside world. No doubt you have seen the letters HTTP (Hypertext Transfer Protocol) and HTTPS (HTTP Secure) on the internet when visiting different websites. These are both data communication protocols that specify how requests and responses are sent using the modern-day client-server relationship that most of the internet uses. When you go to [https://www.google.ca/](https://www.google.ca/), you are performing an HTTPS request to which Google's web servers respond with the HTML, CSS, and JavaScript files necessary to render the basic search engine page. To gain a better understanding of how web requests are communicated, see the [Anatomy of a Web Request](https://viacreative.co.uk/culture/anatomy-web-request).
 
 HTTP and HTTPS requests use different "methods" to specify what action the server must take. Some common examples of these methods are GET, POST, and DELETE.
 
-In this workshop we will only be dealing with HTTP as HTTPS requires more configuration and can be more difficult to understand. 
+In this workshop we will only be dealing with HTTP as HTTPS requires more configuration and can be more difficult to understand. Node comes with its own HTTP API, so the first thing we'll want to do is import that:
 
+```js
+const http = require('http');
+```
+
+An important part of understanding how servers work is understanding the [different parts of a URL](https://en.wikipedia.org/wiki/Uniform_Resource_Locator#Syntax). When you create a server using Node, you have to specify a port that traffic must pass through. In most cases, we can just use a port with a hight number like `3000` or `8888`.
+
+```js
+const port = 3000;
+```
+
+Now we can use the HTTP library's `createServer` method to initialize our server. When we call `http.createServer` it returns an instance of [`http.Server`](https://nodejs.org/api/http.html#http_class_http_server). We will pass it a function that takes a `http.ClientRequest` instance as the first input and a `http.ServerResponse` as the second input, usually called `req` and `res` for short. This function will be used to handle general requests that aren't handled by some other configuration. We want it to specify that every request will respond with the String `"Hello World!"`.
+
+In the function, we want to specify a response code. A response code is attached to the HTTP response to tell the client whether its request was successful or not. Generally, 2xx response codes indicate success, 4xx represent client errors, and 5xx represent server errors. In our case we want all of our requests to return successfully, so we will use status code 200. 
+
+We also want to set a response header in the function to tell the client that the output will be text. This means we have to set the `Content-Type` header to `text/plain`.
+
+Finally, we want to send the message and terminate the response. We use 
+
+```js
+res.end('Hello World!');
+```
+
+to send the message, which is equivalent to 
+
+```js
+res.write('Hello World!');
+res.end();
+```
+
+The final `createServer` call looks like this:
+
+```js
+const server = http.createServer((req, res) => {
+	res.statusCode = 200;
+	res.setHeader('Content-Type', 'text/plain');
+	res.end('Hello World!');
+});
+```
+
+This gives us a server that we can use, but to make use of it, we need to tell it to listen on a specific port. We will use the `listen` method on the `server` that was created to begin listening on a port. `listen` also takes an optional function which gets called when the server is successfully running. I usually like to log what port the server is running on in this function:
+
+```js
+server.listen(port, () => {
+	console.log(`Server running on http://localhost:${port}`);
+});
+```
+
+We can run the server using
+
+```
+$ node index.js
+Server running on http://localhost:3000
+```
+
+If you open a browser and go to [`http://localhost:3000`](http://localhost:3000), you should see the text "Hello World!".
 ### 07 - HTTP with Express.js
 
 > **Learning goal:** `<!-- TODO -->`
@@ -297,6 +415,7 @@ In this workshop we will only be dealing with HTTP as HTTPS requires more config
 > **Learning goal:** `<!-- TODO -->`
 
 - route in `index.js`
+- CRUD API design
 
 ### 09 - Routing with Router
 
