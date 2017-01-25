@@ -725,7 +725,7 @@ TALK ABOUT CALLBACK PATTERN AND HOW TO REDUCE CALLBACK HELL
 - [Yarn Package Manager](https://yarnpkg.com/)
 - [Webpack](https://webpack.js.org/)
 - Front-end frameworks like [React](https://facebook.github.io/react/) and [Angular](https://angularjs.org/)
-- Deploying web apps ([AWS](https://aws.amazon.com/), [GCS](https://cloud.google.com/), [Zeit Now](https://zeit.co/now), [Heroku](https://www.heroku.com/))
+- Deploying web apps ([AWS](https://aws.amazon.com/), [GCS](https://cloud.google.com/), [Zeit Now](https://zeit.co/now), [Heroku](https://www.heroku.com/nodejs))
 
 
 ## License
