@@ -6,6 +6,12 @@ router.get('/', (req, res) => {
 	res.send('Hello index!');
 });
 
+// Ex: POST - http://localhost:3000/echo
+router.post('/echo', (req, res) => {
+	res.send(req.body);
+});
+
+
 // Ex: GET - http://localhost:3000/Zack
 router.get('/:name', (req, res) => {
 	const casing = req.query.case;
@@ -17,11 +23,6 @@ router.get('/:name', (req, res) => {
 	} else {
 		res.send(`Hello ${req.params.name}!`);
 	}
-});
-
-// Ex: POST - http://localhost:3000/echo
-router.post('/echo', (req, res) => {
-	res.json(req.body);
 });
 
 module.exports = router;

@@ -10,10 +10,12 @@ if(filename !== '' || colourToFind !== '') {
 	const regexp = new RegExp(colourToCount, 'i');
 
 	colours.forEach(colour => {
-		if(colour.match(regexp)) count++;
+		if(colour.match(regexp)) {
+			count++;
+		}
 	});
 
-	if(count <= 0) {
+	if(count === 0) {
 		console.log(`Unable to find "${colourToCount}" in ${filename}`);
 	} else {
 		console.log(`There are ${count} occurences of ${colourToCount} in ${filename}`);

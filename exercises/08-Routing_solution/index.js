@@ -8,25 +8,29 @@ app.use(bodyParser.json());
 
 // Ex: GET - http://localhost:3000/
 app.get('/', (req, res) => {
+	res.set('Content-Type', 'text/plain');
 	res.send('Hello index!');
-});
-
-// Ex: GET - http://localhost:3000/Zack
-app.get('/:name', (req, res) => {
-	const casing = req.query.case;
-
-	if(casing === 'lower') {
-		res.send(`Hello ${req.params.name.toLowerCase()}!`);
-	} else if(casing === 'upper') {
-		res.send(`Hello ${req.params.name.toUpperCase()}!`);
-	} else {
-		res.send(`Hello ${req.params.name}!`);
-	}
 });
 
 // Ex: POST - http://localhost:3000/echo
 app.post('/echo', (req, res) => {
-	res.json(req.body);
+	res.send(req.body);
+});
+
+// Ex: GET - http://localhost:3000/Zack
+app.get('/:name', (req, res) => {
+	const name = req.params.name;
+	const casing = req.query.case;
+
+	res.set('Content-Type', 'text/plain');
+
+	if(casing === 'lower') {
+		res.send(`Hello ${name.toLowerCase()}!`);
+	} else if(casing === 'upper') {
+		res.send(`Hello ${name.toUpperCase()}!`);
+	} else {
+		res.send(`Hello ${name}!`);
+	}
 });
 
 app.listen(port, () => {

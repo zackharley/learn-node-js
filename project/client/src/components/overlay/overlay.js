@@ -72,6 +72,7 @@ export default class Overlay extends React.Component {
 	render() {
 		return  (
 			<section className={this.props.isActive ? 'overlay-wrapper' : 'overlay-wrapper hidden'}>
+				<section className={}
 				<Geosuggest
 					types={['(cities)']}
 					radius={500}
