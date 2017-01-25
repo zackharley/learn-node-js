@@ -718,7 +718,6 @@ TALK ABOUT CALLBACK PATTERN AND HOW TO REDUCE CALLBACK HELL
 ## Resources
 
 - http://node.green/ - Used to see what ECMAScript (e.g. ES6) features have been implemented in Node.js
-- http://callbackhell.com/ - A guide on how to reduce callback nesting
 
 ## Next Steps
 
