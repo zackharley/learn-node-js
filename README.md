@@ -717,16 +717,15 @@ TALK ABOUT CALLBACK PATTERN AND HOW TO REDUCE CALLBACK HELL
 
 ## Resources
 
-- http://node.green/
-- http://callbackhell.com/
+- http://node.green/ - Used to see what ECMAScript (e.g. ES6) features have been implemented in Node.js
+- http://callbackhell.com/ - A guide on how to reduce callback nesting
 
 ## Next Steps
 
-- Yarn Package Manager
-- Webpack
-- Front-end frameworks like React and Angular
-- Deploying web apps (AWS, GCS, Zeit Now, Heroku)
-- Testing with ngrok
+- [Yarn Package Manager](https://yarnpkg.com/)
+- [Webpack](https://webpack.js.org/)
+- Front-end frameworks like [React](https://facebook.github.io/react/) and [Angular](https://angularjs.org/)
+- Deploying web apps ([AWS](https://aws.amazon.com/), [GCS](https://cloud.google.com/), [Zeit Now](https://zeit.co/now), [Heroku](https://www.heroku.com/))
 
 
 ## License
