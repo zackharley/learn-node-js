@@ -12,12 +12,15 @@
 7. [Next Steps](#next-steps)
 8. [License](#license)
 
+***
 
 ## Learning Goals
 - Become familiar with [Node.js](https://nodejs.org) and its APIs.
 - Become familiar with [NPM](https://www.npmjs.com/)
 - Become familiar with [Express.js](http://expressjs.com/)
 - Learn how to consume a web API by making a weather appplication
+
+***
 
 ## Before We Begin
 
@@ -44,6 +47,8 @@ We will also be using an API key for the [Google Places API Web Service](https:/
 
 Get the API keys for both of those APIs and make note of them. We'll be using them for the final project.
 
+***
+
 ## Introduction
 
 Node.js, as described on the [Node.js website](https://nodejs.org), is an "asynchronous event driven JavaScript runtime". Let's chop up this statement up into pieces to better understand what that means and explore a little deeper:
@@ -56,6 +61,8 @@ Node.js, as described on the [Node.js website](https://nodejs.org), is an "async
 
 Some languages like C/C++ require you to compile your programs before you run them. Node takes care of that for you by compiling your JavaScript to machine code before it executes it, all in one step.
 
+***
+
 ## Exercises
 
 These exercises are designed to `<!-- TODO -->`
@@ -66,6 +73,8 @@ There are two folders for each exercise:
 - **##-Exercise-Name_solution**: This folder contains __one possible solution__ to the problem. The solution in this folder is not necessarily the only possible solution, so keep that in mind.
 
 **You are now ready to begin!**
+
+***
 
 ### 01 - Hello World
 
@@ -84,6 +93,8 @@ $ node index.js
 The `node` command executes a supplied JavaScript file. Soon we'll see how to split our programs into different files, or modules, and how to import and export those modules so they can be used by Node. But first, another example.
 
 > **NOTE:** There are a number of other Node.js APIs that give you more functionality than what is offered when writing JavaScript for the browser. While we will see some of the other APIs in this workshop, you can see a full list of APIs in the [Node.js documentation](https://nodejs.org/api/)
+
+***
 
 ### 02 - Basic Addition
 
@@ -141,6 +152,8 @@ We can test that our program works correctly by testing that it outputs the corr
 $ node sum.js 12 30
 12 + 30 = 42
 ```
+
+***
 
 ### 03 - Modules
 
@@ -260,6 +273,8 @@ We can test this module by running
 $ node index.js
 ```
 
+***
+
 ### 04 - Synchronous I/O
 
 > **Learning goal:** Understand how Node.js deals with file I/O
@@ -338,12 +353,16 @@ if(count === 0) {
 
 - talk about exit console statement `<!-- TODO -->`
 
+***
+
 ### 05 - Asynchronous I/O
 
 > **Learning goal:** `<!-- TODO -->`
 
 - count the number of colour occurences in the file and output them to the command line
 - talk about exit console statement
+
+***
 
 ### 06 - Hello HTTP
 
@@ -410,6 +429,8 @@ Server running on http://localhost:3000
 ```
 
 If you open a browser and go to [`http://localhost:3000`](http://localhost:3000), you should see the text "Hello World!".
+
+***
 
 ### 07 - HTTP with Express.js
 
@@ -518,6 +539,8 @@ $ node index.js
 
 and check our browser to ensure that it is responding with the correct information.
 
+***
+
 ### 08 - Routing
 
 > **Learning goal:** Create basic routes and understand how basic APIs can be created.
@@ -579,6 +602,16 @@ app.get('/', (req, res) => {
 Now we have the middleware in place to be able to handle a GET request to `/`.
 
 #### POST `/echo`
+
+The aptly named `echo` route will return the respond to any POST requests by returning the body of the request. Because we have the Body Parser middleware in use, any POST request body will be parsed from a string into JSON. This means that our `/echo` route can only receive a JSON body to return the correct data. 
+
+This route is relatively simple, but is our first introduction to POST routes. Since we are only responding to POST requests, we want to use `app.post`. We need to supply `app.post` with the `/echo` URL and the function to handle requests. The function will respond to the request with the request's body.
+
+```js
+app.post('/echo', (req, res) => {
+	res.send(req.body);
+});
+```
 
 #### GET `/:name?casing=case`
 
@@ -671,8 +704,6 @@ app.get('/:name', (req, res) => {
 	}
 });
 ```
-
-***
 Now that we have all three of our routes defined, we can tell the server to begin listening for requests:
 
 ```js
@@ -681,17 +712,113 @@ app.listen(port, () => {
 });
 ```
 
-That's it! We can now test our routes to make sure that they have been made properly.
+That's it! We can now test our routes to make sure that they have been made properly. Start the server with 
+
+```js
+node index.js
+```
+
+***
 
 ### 09 - Routing with Router
 
-> **Learning goal:** `<!-- TODO -->`
+> **Learning goal:** Understand how to modularize your routes to make your code cleaner.
 
-- move routing to a `routes.js`
+In this exercise we will be moving our routes from Exercise 8 into a seperate `router.js` file in order to de-clutter our `index.js` file. 
+
+#### `index.js`
+Like in Exercise 8, we want to import Express and Body Parser, but we also want to import our `router.js` file so we can make use of the routes that will be contained there.
+
+```js
+const express = require('express');
+const bodyParser = require('body-parser');
+const router = require('./router');
+```
+
+Next we want to declare our Express `app` and our `port`:
+
+```js
+const app = express();
+const port = 3000;
+```
+
+We then want to initialize the JSON Body Parser:
+
+```js
+app.use(bodyParser.json());
+```
+
+This is the part of `index.js` that changes from Exercise 8; we want to replace our three route declarations with the following line:
+
+```js
+app.use(router);
+```
+
+This tells the Express app to look at the `router` module to see how to perform request routing.
+
+Finally, we tell our server to listen:
+
+```js
+app.listen(port, () => {
+	console.log(`Server running on http://localhost:${port}`);
+});
+```
+
+#### `router.js`
+
+This file is going to contain all of our Express routes. To create a router, we want to first import Express:
+
+```
+const express = require('express');
+```
+
+then create a new instance of `Router`:
+```
+const router = express.Router();
+```
+
+
+> "[An instance of `Router` ] is an isolated instance of middleware and routes. You can think of it as a 'mini-application,' capable only of performing middleware and routing functions. Every Express application has a built-in app router." --- [Express.js Documentation](https://expressjs.com/en/api.html#router)
+
+This means that we can create a specific set of middleware and routes, optimizing a project's modularity. Since `router` is like a smaller version of `app`, we can declare routes in the same way. Since we are declaring the same three routes as Exercise 8, I will just show their declaration and not go into detail:
+
+```js
+router.get('/', (req, res) => {
+	res.send('Hello index!');
+});
+
+router.post('/echo', (req, res) => {
+	res.send(req.body);
+});
+
+router.get('/:name', (req, res) => {
+	const casing = req.query.case;
+
+	if(casing === 'lower') {
+		res.send(`Hello ${req.params.name.toLowerCase()}!`);
+	} else if(casing === 'upper') {
+		res.send(`Hello ${req.params.name.toUpperCase()}!`);
+	} else {
+		res.send(`Hello ${req.params.name}!`);
+	}
+});
+```
+
+Finally, we want to export our `router`:
+
+```js
+module.exports = router;
+```
+
+Our server will function the same as in Exercise 8, but now we have two smaller and easier to read files!
+
+***
 
 ### 10 - Static Files
 
 > **Learning goal:** `<!-- TODO -->`
+
+***
 
 ### 11 - Middleware
 
@@ -699,11 +826,15 @@ That's it! We can now test our routes to make sure that they have been made prop
 
 - Create our own middleware generate request logs [Apache log](http://ossec-docs.readthedocs.io/en/latest/log_samples/apache/apache.html)
 
+***
+
 ### 12 - Consuming APIs
 
 > **Learning goal:** `<!-- TODO -->`
 
 - Use GitHub as an example
+
+***
 
 ## Weather App
 - Read cities from a file
