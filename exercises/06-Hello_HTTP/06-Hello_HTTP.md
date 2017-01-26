@@ -66,4 +66,4 @@ Server running on http://localhost:3000
 
 If you open a browser and go to [`http://localhost:3000`](http://localhost:3000), you should see the text "Hello World!".
 
-[To next lesson](/exercises/07-Hello_HTTP_with_Express/07-Hello_HTTP_with_Express.md)
+[To next lesson](/exercises/07-HTTP_with_Express/07-HTTP_with_Express.md)

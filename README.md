@@ -78,7 +78,7 @@ Each of the exercises is contained in the `exercises` directory. There are two f
 - [04 - Synchronous IO](/exercises/04-Synchronous_IO/04-Synchronous_IO.md)
 - [05 - Asynchronous IO](/exercises/05-Asynchronous_IO/05-Asynchronous_IO.md)
 - [06 - Hello HTTP](/exercises/06-Hello_HTTP/06-Hello_HTTP.md)
-- [07 - Hello HTTP with Express](/exercises/07-Hello_HTTP_with_Express/07-Hello_HTTP_with_Express.md)
+- [07 - HTTP with Express](/exercises/07-HTTP_with_Express/07-HTTP_with_Express.md)
 - [08 - Routing](/exercises/08-Routing/08-Routing.md)
 - [09 - Routing with Router](/exercises/09-Routing_with_Router/09-Routing_with_Router.md)
 - [10 - Static files](/exercises/10-Static_files/10-Static_files.md)

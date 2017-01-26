@@ -1,4 +1,4 @@
-[To previous lesson](/exercises/07-Hello_HTTP_with_Express/07-Hello_HTTP_with_Express.md)
+[To previous lesson](/exercises/07-HTTP_with_Express/07-HTTP_with_Express.md)
 
 # 08 - Routing
 
