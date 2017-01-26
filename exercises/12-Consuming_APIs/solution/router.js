@@ -4,7 +4,7 @@ const home = require('./views/home');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-	res.send(`Please visit http://localhost:${port}/:username to see a user's GitHub information.`);
+	res.send(`Please visit /:username to see a user's GitHub information.`);
 });
 
 router.get('/:username', (req, res) => {
