@@ -7,12 +7,17 @@ if(filename !== '' || colourToFind !== '') {
 	let count = 0;
 	const regexp = new RegExp(colourToCount, 'i');
 
-	fs.readFile(filename, (err, colours) => {
-		if(err) throw new Error(`Cannot read colours from ${filename}`);
+	fs.readFile(filename, (error, colours) => {
+		if(error) {
+			throw new Error(`Cannot read colours from ${filename}`);
+		}
+
 		colours = JSON.parse(colours);
 
 		colours.forEach(colour => {
-			if(colour.match(regexp)) count++;
+			if(colour.match(regexp)) {
+				count++;
+			}
 		});
 
 		if(count <= 0) {

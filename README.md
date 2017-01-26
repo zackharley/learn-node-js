@@ -93,7 +93,15 @@ Each of the exercises is contained in the `exercises` directory. There are two f
 - return data to be displayed on the client
 - if we add cities, write them to file
 - if we delete cities, rewrite the list to file.
-- CRUD API design
+
+API KEY in start.sh
+GOOGLE_MAPS_KEY in index.html
+
+- GET `/api/cities`
+- POST `/api/cities`
+- DELETE `/api/cities`
+
+For the final project, we want to create a server that has 3 API routes that 
 
 ## Resources
 

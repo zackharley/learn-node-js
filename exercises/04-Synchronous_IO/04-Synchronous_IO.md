@@ -34,8 +34,19 @@ if(filename !== '' || colourToFind !== '') {
 }
 ```
 
+Inside our `if` statement, we then want to initialize our `count` variable:
 
-To count the colours, we're going to want to use the [`readFileSync`](https://nodejs.org/api/fs.html#fs_fs_readfilesync_file_options) method on `fs` to import our list of colours. This will allow us to perform blocking I/O, meaning that the program will wait until the `readFileSync` function resolves until it completes anything else. Something to note about reading from a file with Node is that it returns the data as a Buffer (unless otherwise specified), so to make the data readable, we want convert it into a JSON object (since it is being read from a JSON file):
+```js
+let count = 0;
+```
+
+Next, we have to create a way of matching the `colourToCount` to the `colours` we will read from the JSON. The easiest way, in my opinion, is to use a [Regular Expression](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions) (RegExp); we want to create a case insensitive RegExp:
+
+```js
+const regexp = new RegExp(colourToCount, 'i');
+```
+
+Now we're going to use the [`readFileSync`](https://nodejs.org/api/fs.html#fs_fs_readfilesync_file_options) method on `fs` to import our list of colours. This will allow us to perform blocking I/O, meaning that the program will wait until the `readFileSync` function resolves until it completes anything else. Something to note about reading from a file with Node is that it returns the data as a Buffer (unless otherwise specified), so to make the data readable, we want convert it into a JSON object (since it is being read from a JSON file):
 
 ```js
 const colours = JSON.parse(fs.readFileSync(filename));
@@ -43,22 +54,10 @@ const colours = JSON.parse(fs.readFileSync(filename));
 
 Since our JSON file contains an array of colours, that is what is contained in `colours`.
 
-We then want to initialize our `count` variable:
+Now that we have our `colour` imported and we also have a way of matching them to the specified colour, we can begin checking them. All we want to do is increment the count every time there is a match between the current colour and the `colourToCount`:
 
 ```js
-let count = 0;
-```
-
-Next, we have to create a way of matching the `colourToCount` to the `colours`. The easiest way in my opinion is to use a [Regular Expression](https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions) (RegExp); we want to create a case insensitive RegExp:
-
-```js
-const regexp = new RegExp(colourToCount, 'i');
-```
-
-Now that we have a way of matching the colours in the `colours` array, we can begin checking them. All we want to do is increment the count every time there is a match between the current colour and the `colourToCount`:
-
-```js
-colours.forEach(colour => {
+colours.forEach((colour) => {
 	if(colour.match(regexp)) {
 		count++;
 	}
@@ -75,7 +74,6 @@ if(count === 0) {
 }
 ```
 
-
-- talk about exit console statement `<!-- TODO -->`
+If we put a `console.log` at the last line of the `if` statement to indicate that the program has completed and is exiting, this line will get printed as we expect. In the next exercise we will see how the asynchronous nature of Node.js will change how we will indicate the end of our program.
 
 [To next lesson](/exercises/05-Asynchronous_IO/05-Asynchronous_IO.md)

@@ -1,0 +1,116 @@
+$blue: #529ECC;
+$red: #DF3A4A;
+$white: white;
+
+.card-wrapper {
+	background-color: $white;
+	box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.35);
+	display: flex;
+	flex-direction: column;
+	height: 400px;
+	padding: 0px 40px;
+	width: 350px;
+}
+
+.card-buttons-wrapper {
+	display: flex;
+	flex-direction: row;
+}
+
+.card-button {
+	align-items: center;
+	border-radius: 20px;
+	box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.35);
+	cursor: pointer;
+	display: flex;
+	height: 40px;
+	justify-content: center;
+	position: relative;
+	top: -20px;
+	width: 40px;
+}
+
+.card-add-button {
+	background-color: $blue;
+}
+
+.card-add-icon {
+	color: $white;
+}
+
+.card-close-button {
+	background-color: $red;
+	margin-left: auto;
+}
+
+.card-close-icon {
+	color: $white;
+}
+
+.card-header {
+	display: flex;
+	flex-direction: row;
+	padding: 10px 0px;
+}
+
+.card-clock {
+	font-size: 20px;
+	margin-top: 2px;
+}
+
+.card-time {
+	font-size: 20px;
+	margin: 0px 0px 0px 6px;
+}
+
+.card-location {
+	font-size: 20px;
+	font-weight: 600;
+	margin: 0px 0px 0px auto;
+}
+
+.card-weather-image {
+	height: 200px;
+	position: relative;
+	top: -30px;
+}
+
+.card-body {
+	align-items: center;
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	position: relative;
+	top: -60px;
+}
+
+.card-center-column {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	min-width: 110px;
+}
+
+.card-description {
+
+}
+
+.card-current-temp {
+	font-weight: 600;
+	font-size: 40px;
+	margin: 0;
+}
+
+.card-temp-predictions {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+.card-temp-hi {
+
+}
+
+.card-temp-lo {
+	margin-left: auto;
+}

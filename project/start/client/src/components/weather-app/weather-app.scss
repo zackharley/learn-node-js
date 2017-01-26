@@ -1,0 +1,35 @@
+$grey: #D4D3CD;
+
+body {
+	background-color: $grey;
+	background-image: url('/img/weather.png');
+	font-family: 'Roboto', sans-serif;
+	margin: 0;
+}
+
+.app-header {
+	display: flex;
+    font-size: 40px;
+    justify-content: center;
+}
+
+.app-body-wrapper {
+	display: flex;
+	flex-direction: row;
+}
+
+.app-button {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+	flex: 0 1 auto;
+    font-size: 40px;
+    margin: 0px 20px;
+}
+
+.app-card-wrapper {
+	align-items: center;
+	display: flex;
+	flex: 1 1 auto;
+	justify-content: center;
+}

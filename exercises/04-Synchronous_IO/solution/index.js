@@ -4,10 +4,10 @@ const filename = process.argv[2];
 const colourToCount = process.argv[3];
 
 if(filename !== '' || colourToFind !== '') {
-	const colours = JSON.parse(fs.readFileSync(filename));
-
 	let count = 0;
 	const regexp = new RegExp(colourToCount, 'i');
+
+	const colours = JSON.parse(fs.readFileSync(filename));
 
 	colours.forEach(colour => {
 		if(colour.match(regexp)) {
