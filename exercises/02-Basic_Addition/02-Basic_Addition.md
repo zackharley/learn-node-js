@@ -1,4 +1,4 @@
-[To previous lesson](/exercises/02-Basic_Addition.md)
+[To previous lesson](/exercises/01-Hello_World/01-Hello_World.md)
 
 # 02 - Basic Addition
 
@@ -57,4 +57,4 @@ $ node sum.js 12 30
 12 + 30 = 42
 ```
 
-[To next lesson](/exercises/03-Modules.md)
+[To next lesson](/exercises/03-Modules/03-Modules.md)

@@ -18,4 +18,4 @@ The `node` command executes a supplied JavaScript file. Soon we'll see how to sp
 
 > **NOTE:** There are a number of other Node.js APIs that give you more functionality than what is offered when writing JavaScript for the browser. While we will see some of the other APIs in this workshop, you can see a full list of APIs in the [Node.js documentation](https://nodejs.org/api/)
 
-[To next lesson](/exercises/02-Basic_Addition.md)
+[To next lesson](/exercises/02-Basic_Addition/02-Basic_Addition.md)
